@@ -2,65 +2,7 @@
 前端框架Angular基础知识以及搭建过程
 
 
- 设计原则和方法 :  提高程序的可维护性 可修改性 可扩展性
-
-   1. YAGNI  :  不写不需要的功能或代码
-   2. DRY    :  不要重复自己的代码
-   3. OCP    :  开闭原则 ， 对扩展开放 对修改封闭 
-   4. LCHC   :  高内聚 ， 低耦合
-   5. Dimeter Law :  迪米特法则 最少知识原则  ， 一个对象/组件只负责必须的少量功能
-
-
-  MVVM框架的组成 : 数据绑定 指令系统 组件式编程 路由和导航 状态保持 第三方组件库 
-
-
-
-  Angular框架
-
-      由 Google开发的 MVVM 框架 , 可用于开发 Web 移动端 桌面端 的前端程序的中大型框架
-
-      AngularJS(version 1.x) 复杂 ，不建议使用
-
-      Angular(version 2.x - 至今版本(15.x))  -> 推荐   
-          -----> 官网 :  http://angular.io
-          -----> 中文镜像开发文档 :  http://angular.cn 
-
-      相比之下 vue更适合开发中小型项目 angular更适合开发中大型项目
-
-      AngularJS (v1.x)开发方式 : 1.  script引入vue.js   2. 脚手架方式
-
-      到了Angular(v2.x)以后开发方式只有通过脚手架的方式开发 : 
-
-               Angular (v2.x)开发方式 : 1.  脚手架方式
-
-
-      搭建Angular开发环境 : 
-
-        前提 : Ng需要 Node.js v10.9以上版本  （通过命令行 > node -v 查看 node.js版本） 
-              如果 node.js版本过低可通过控制面板卸载 ， 在官网下载 LTS长期稳定版
-        
-        1. 下载并安装脚手架工具
-
-              npm install -g @angular/cli  （默认仓库 : registry.npmjs.com 极不稳定）
-
-              考虑到默认仓库不稳定可以使用第三方npm下载仓库
-                 1. npm config get registry  （查看当前npm默认的下载仓库地址）
-                 2. npm config set registry https://registry.npm.taobao.org/ （使用淘宝 npm镜像）
-
-        2. 运行脚手架工具创建空白项目
-
-              ng new myNgApp （在你选定的目录下创建新的空白项目）
-            
-              创建过程中会提示是否创建路由 和 css样式的文件类型（.css .scss .less）
-
-        3. 进入空白项目并运行开发服务器
-
-              cd myNgApp
-              npm start
-
-        4. 客户端访问测试
-
-              http://127.0.0.1 : 端口号
+ 
 
 
       
