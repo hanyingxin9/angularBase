@@ -58,4 +58,87 @@
 
         4. 客户端访问测试
 
-              http://127.0.0.1 : 端口号
+              http://127.0.0.1 : 端口号  (localhost:4200)
+
+
+  package.json文件中有配置的命令 ， 包括启动命令 使用的工具版本等
+
+  angular.json : NG项目的配置文件
+
+      index : ./src/index.html        <app-root></app-root>
+      main  : ./src/main.ts
+
+  e2e  测试包
+
+  node_modules 第三方模块
+
+  src 源代码
+
+    index.html  首页   <body></body>标签中<app-root></app-root>
+
+    main.ts中引导启动模块 app.modules.ts
+
+
+  与vue不同 ， vue项目中直接是组件的集合 ， 而angular中则是根据模块划分 ， 每个模块中再包含各个组件 ，
+  所以vue更适合小型项目 ， 而angular更适合大型项目
+
+
+
+Angular项目启动过程分析 :
+
+      1. angular.json : NG项目的配置文件
+
+            index :  ./src/index.html    <app-root></app-root>
+            main  :  ./src/main.ts
+
+      2. main.ts >  bootstrapModule(AppModule)
+
+      3. app.module.ts >  bootstrap : [AppComponment]
+
+      4. app.component.ts > selector : 'app-root'
+                          > templateUrl : 'app.component.html'
+
+      5. app.component.html > HTML片段
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

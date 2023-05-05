@@ -1,0 +1,80 @@
+
+Angular核心概念之一 :  模块
+
+   module :  NG中一个抽象的容器 ， 用来对组件进行分组 ， 整个应用初始时有且只有一个主模块 : AppModule
+
+Angular核心概念之二 : 组件
+
+   组件 : 是一段可以反复使用的页面片段 , 如页头 ， 轮播 ， 手风琴 ， 输入条 ， 展示区域等等
+
+   组件(Component) = 模板(Template) + 脚本(Script) + 样式(Style)
+   (component = html + css + .ts)
+
+   *** 在NG中  ， 任何一个组件必须声明在一个模块中
+
+   自定义组件的步骤 :
+
+      1. 创建组件class  （myConponent01.ts）
+
+            例 :
+
+              @Component({
+                  selector : 'myC',
+                  template : '<h2>这是我注册过的组件myComponent01,在app.component.html中使用HTML元素标签</h2>',
+                  //templateUrl : 'xxx.html'
+                  styleUrls : ['xxx.less']
+                  ...
+              })
+              export class myComponent01 {
+
+              }
+
+      2. 在某个模块中注册组件class  （app.module.ts） 将创建的组件注册到了主模块中
+
+            @NgModule({ // 表示是模块而非组件
+              declarations: [ // 声明组件
+                AppComponent,
+                myComponent01 //将创建的组件注册到模块中
+              ],
+              ....
+              })
+              export class AppModule { }
+
+      3. 使用已经注册过的组件   （app.component.html） 在对应的模板中使用标签
+
+            <myC></myC>
+
+
+
+   完整的自定义组件流程 :  注意在第三步的时候不要在自己组件的模板中使用自己的标签 ， 会导致循环造成栈溢出
+
+         1.  myComponent02.component.ts
+             myComponent02.component.html
+             myComponent02.component.less
+
+         2.  注册在app.module.ts模块
+
+         3.  使用标签在app.component.html模板文件
+
+
+   常规开发模式 :
+
+      1. 首先创建一个模块 ng g module xxx  （只包含.ts文件）
+      2. 在该模块里面创建多个组件 ng g c xxx （每个组件都包含.html .less .ts文件）
+      3. 将组件注册在该模块的ts文件中
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

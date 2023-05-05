@@ -3,10 +3,14 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import {myComponent01} from "./myComponent01";
+import {MyComponent02Component} from "./myComponent02.component";
 
-@NgModule({
-  declarations: [
-    AppComponent
+@NgModule({ // 表示是模块而非组件
+  declarations: [ // 声明组件
+    AppComponent,
+    myComponent01, //将创建的组件注册到模块中
+    MyComponent02Component
   ],
   imports: [
     BrowserModule,
