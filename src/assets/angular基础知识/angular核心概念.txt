@@ -57,20 +57,198 @@ Angular核心概念之二 : 组件
          3.  使用标签在app.component.html模板文件
 
 
+
+   组件 .ts文件编写规范 :  （包括组件的脚本ts文件 ， 样式css文件 ， 模板html文件）
+
+        1.   组件的 .ts文件 一律命名成 xxx.component.ts 表示这是组件的ts文件
+
+        2.    @Component({   //组件上一定要标有装饰器
+                 selector : 'xxx-myC02',  //别人使用时的标签
+                 templateUrl : './xxx.component.html',  //引用html文件地址 ， 相对路径
+                 styleUrls : ['./xxx.component.less']   //引用css样式文件地址 ， 相对路径 ， 可以有多个，所以是列表
+              })
+
+              export class MyC02Component {  //export表明导出 class , 可以被外界使用
+
+              }
+
+
+   组件注册在模板规范 :
+
+       1.   在模块的.ts文件 :  @NgModule中的 declarations 中将组件 .ts文件类名注册进去
+
+               @NgModule({ // 表示是模块而非组件
+                          declarations: [ // 声明组件
+                            AppComponent,
+                            myComponent01, //将创建的组件注册到模块中
+                            MyComponent02Component
+                          ],
+
+
+   使用标签在模板文件中的规范 :
+
+       1.   一般来说子组件的标签都是在父组件的模板文件中使用
+
+       2.   *** 禁止在本组件的模板文件中使用本组件的标签选择器
+
+              ->  报错 : ERROR RangeError : Maximum call stack size exceeded  最大的调用栈溢出
+
+
+   **** :
+
    常规开发模式 :
 
       1. 首先创建一个模块 ng g module xxx  （只包含.ts文件）
       2. 在该模块里面创建多个组件 ng g c xxx （每个组件都包含.html .less .ts文件）
       3. 将组件注册在该模块的ts文件中
 
+      已经有模块或者在根模块下创建组件的情况 ， 可以直接跳过第一步创建组件
+
+   ****
+
+
+   注意一点 : 创建的组件内的css样式文件里的样式只有本组件能用 ， 如果想设置全局的样式 ， 要在 styles.less 文件中设置样式
+
+
+   Node.js官方安装的工具 :
+
+      npm : 第三方模块的维护工具
+      npx : 第三方可执行文件的执行工具 ， npx可用于执行当前项目中 node_nodules/.bin目录下的可执行文件
+      （如果一开始  npm install -g @angular/cli 不成功 ， 是通过复制项目得到的node_modules中的第三方模块
+        可以使用 npx xxx 来执行可执行文件 ， 例如 : npx ng g c xxx）
+
+
+   Angualr提供的创建组件的简化工具 :  会创建文件夹以及下面的四个文件 ts/html/less/ spec.ts(单元测试ts文件，可以删除)
+
+     ng generate component 组件名
+     npx ng generate component 组件名
+
+     --> 简化 : ng g c 组件名
+
+   Angualr提供的创建模块的简化工具 :
+
+     ng generate module 模块名
+     npx ng generate module 模块名
+
+     --> 简化 : ng g module 模块名
+
+
+   命令可以很方便的 创建组件 并 自动在组件所在的模块中注册组件 ，
+   但是在哪个模板中使用组件的标签由自己决定 ， 不要忘了引用标签
 
 
 
 
+Angular核心概念之三 : 数据绑定     --->  以下数据绑定操作代码均在 my-component03 文件中
+
+    1. HTML绑定
+
+         插值公式 (NG表达式) :   {{ }}
+
+         插值表达式可以执行的操作 :   -->  my-component03.component.html
+
+          1. 算数运算
+          2. 比较运算
+          3. 逻辑运算
+          4. 三目运算符
+          5. 调用函数
+
+         不可以执行的操作 :
+
+          1. 创建对象  插值表达式中禁止出现 new关键字
+          2. JSON序列化  插值表达式中JSON 是 undefined
+          3. ...
+
+
+
+    2. 属性绑定
+
+         形式1 : 直接在属性上使用插值表达式  例如 :
+
+          <p title="{{name}}">这是段落 ，设置它的title属性为 ts文件中的name , (使用插值表达式来属性绑定 , 不推荐)</p>
+
+         形式2 : 使用 []做属性绑定 例如 :
+
+          <p [title]="name">这是段落 ，设置它的title属性为 ts文件中的name , (使用属性绑定 , 推荐)</p>
+
+
+         *** 属性绑定特殊情况 :
+
+                 通常情况下 ， 属性绑定的都是ts文件中的变量 ， 但是有些时候属性绑定的式常量 或者 常量变量拼接的内容
+                 例如 :
+                         <p [title] = "'这个人的姓名是' + name"></p>
+                         <img src = "'../assets' + imgUrl"></img>
+
+                 这个时候常量内容使用 '' 并使用 + 和变量拼接起来
+
+
+    3. 指令绑定
+
+
+
+    4. 事件绑定
+
+          事件绑定使用 ()  :  事件名使用 () 括起来 ， 处理函数名后面必须跟小括号 ， 有无参数看情况
+
+          例如 :  (click) = "add()"
+                 (click) = "reduce(1)" //处理函数参数如何在 ts文件中取到暂不清楚 ，使用常量值代替
+
+
+
+    5. 双向数据绑定
 
 
 
 
+Angular中的指令系统 :
+
+
+   1. 循环绑定 :  *ngFor
+
+        1. 要想清楚让哪个元素循环 ? 比如让 <ul> 里的 <li>元素循环 ， 那么 *ngFor就要写在 <li>上
+
+        2. 格式 :
+
+             //不带循环下标的
+             1. *ngFor = "let 临时变量 of ts文件中的数据"
+
+             //带循环下标的 ，将循环下标 index 赋值给 i
+             2. *ngFor = "let 临时变量 of ts文件中的数据 ; index as i"
+
+
+        例如 :
+
+          1. <ul>
+               <li *ngFor = "let star of starLists">
+                  {{ star }}
+               </li>
+             </ul>
+
+          2. <ul>
+               <li *ngFor = "let star of starLists ; index as i">
+                 {{ i }} - {{ star }} // i 是下标
+               </li>
+             </ul>
+
+
+   2.  选择绑定 :  *ngIf
+
+          1. 格式 :  *ngIf = "布尔表达式"
+
+          2. 说明 : 如果布尔表达式的值为false ，则当前元素从 DOM树上删除
+
+          例如 :
+
+            <div *ngIf = "isPayingUser">
+               <p>
+                    此处内容为付费内容 ，只有当用户为付费用户时才可见
+                    从ts文件中获取的 isPayingUser = true 可见
+                    从ts文件中获取的 isPayingUser = false 不可见
+                    ...
+                    ...
+                    ...
+               </p>
+            </div>
 
 
 

@@ -103,6 +103,103 @@ Angular项目启动过程分析 :
 
 
 
+Angular思维导图 :
+
+
+     1. 概述 :
+
+          MVVM框架 ， 适用于中大型的Web , 移动App , 桌面项目
+
+     2. 搭建开发环境 :
+
+          1. 安装Node.js 和 npm , git
+          2. 下载并安装脚手架工具  npm install -g @angular/cli
+          3. 运行脚手架工具并创建空白项目 ng new 项目名
+          4. 进入项目目录 ， 运行开发服务器  npm start
+          5. 使用客户端访问测试  http://localhost:4200
+
+     3. 项目启动过程 :
+
+          1. angular.json文件中配置了 项目首页 index.html 和 项目访问入口ts文件 main.ts
+
+          2. 项目通过 main.ts中的 :
+
+                //引导启动模块
+                platformBrowserDynamic().bootstrapModule(AppModule)
+                  .catch(err => console.error(err));
+
+             找到启动的主模块
+
+          3. 在主模块中找到注册在里面的组件 :
+
+                @NgModule({ // 表示是模块而非组件
+                  declarations: [ // 声明组件
+                    AppComponent,
+                    myComponent01, //将创建的组件注册到模块中
+                    MyComponent02Component,
+                    MyComponent03Component
+                  ],
+                  imports: [
+                    BrowserModule,
+                    AppRoutingModule
+                  ],
+                  providers: [],
+                  bootstrap: [AppComponent] //引导启动主组件
+                })
+                export class AppModule { }
+
+          4. index.html的body中只有一个组件标签 <app-root></app-root>
+             即app-component.ts组件 ， 其他组件都作为该组件的子组件或子组件的子组件存在
+
+             *** 首页内容并不在index.html中 ， index.html的 body中只有 主组件<app-root></app-root>
+             真正的模板内容就是<app-root></app-root>组件的模板内容 即app-component.html
+
+
+
+     4. NG核心概念 : 模块 （module）
+
+          用于对项目中的大量组件进行分组 ， 如用户模块 ，商品模块 ， 主引导模块（app.module.ts）
+
+
+     5. NG核心概念 : 组件 （component）
+
+          是一段可以重复使用的代码片段 ， 组件式编程可以提高代码的可维护性
+
+          组件 = 脚本（Model） + 模板（view） + 样式
+
+          创建组件 :
+
+            1. 创建组件类并使用装饰器装饰
+            2. 在某个模块中注册组件类
+            3. 在模板中使用该组件
+
+            简化组件创建过程命令 : [npx] ng g c XXX
+
+          创建组件的组件类名是默认将创建的文件夹中的 '-' 替换成驼峰 例如 : my-component03 -> myComponent03Component
+
+          组件的编写过程 ，先写出html模板文件内容 ， 再分别根据数据需要和样式写出 ts文件 和 css
+
+
+
+     6. 增加代码可维护性的途径 :
+
+           HTML : 组件化编程
+           CSS  : 使用预编译样式语言 - Sass/SCSS/Stylus/less
+           TS   : 面向对象 组件化编程
+
+
+     ....
+
+     7. Angular核心概念之数据绑定 :
+
+        1. HTML绑定
+        2. 属性绑定
+        3. 指令绑定
+        4. 事件绑定
+        5. 双向数据绑定
+
+
+    数据绑定与指令在 angular核心概念里 -> angular核心概念.txt
 
 
 
