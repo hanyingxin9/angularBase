@@ -50,5 +50,14 @@
     </p>
   </div>
 
+  <div *ngIf  = "personAge >= 18 ; else elseBlock">
+    年龄大于 18 可见内容
+  </div>
+  <ng-template #elseBlock> //条件不满足时走 else , 使用 # 为元素指定 id , *ngIf 里只写 # 后面的id即可
+  <div>
+    年龄小于 18 可见内容
+  </div>
+  </ng-template>
+
 
 </div>

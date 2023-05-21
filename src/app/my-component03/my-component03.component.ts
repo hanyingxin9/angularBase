@@ -23,6 +23,11 @@ export class MyComponent03Component {
   //当前用户是否为付费用户
   isPaingUser = true;//为 false 时不可见付费内容
 
+  //测试指令 选择绑定 *ngIf
+  //实现 if - else
+  //根据年龄决定显示内容
+  personAge = 19;
+
 
   reduce(count : number){
     this.age -= count;

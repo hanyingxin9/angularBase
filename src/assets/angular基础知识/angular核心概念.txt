@@ -185,21 +185,6 @@ Angular核心概念之三 : 数据绑定     --->  以下数据绑定操作代�
     3. 指令绑定
 
 
-
-    4. 事件绑定
-
-          事件绑定使用 ()  :  事件名使用 () 括起来 ， 处理函数名后面必须跟小括号 ， 有无参数看情况
-
-          例如 :  (click) = "add()"
-                 (click) = "reduce(1)" //处理函数参数如何在 ts文件中取到暂不清楚 ，使用常量值代替
-
-
-
-    5. 双向数据绑定
-
-
-
-
 Angular中的指令系统 :
 
 
@@ -249,6 +234,229 @@ Angular中的指令系统 :
                     ...
                </p>
             </div>
+
+
+          3. *ngIf实现 if - else
+
+             例如 :
+
+                  <div *ngIf  = "personAge >= 18 ; else elseBlock">
+                      年龄大于 18 可见内容
+                  </div>
+                  <ng-template #elseBlock> //条件不满足时走 else , 使用 # 为元素指定 id , *ngIf 里只写 # 后面的id即可
+                    <div>
+                       年龄小于 18 可见内容
+                    </div>
+                  </ng-template>
+
+          *** if - else中 ， else的内容一定要包裹在 <ng-template></ng-template>中 ，在 <ng-template>标签内可以
+              使用各种元素，但是外面必须用 <ng-template></ng-template>包裹 （ng-template后跟 #xxx 表示这是else的内容）
+
+
+
+          4. *ngIf 练习  my-component04
+
+          5. 写if-else时注意 *ngIf 与 <ng-template></ng-template> 之间不要加别的内容包括注释 ，不要断开
+
+============================================================================================================
+
+
+       特殊的选择绑定 : [ngSwitch] 搭配  *ngSwitchCase  和  *ngSwitchDefault  使用
+
+          用法 :    -> my-component04
+
+             <ANY [ngSiwtch] = "表达式">
+
+                <ANY *ngSwitchCase = "值1"></ANY>
+                <ANY *ngSwitchCase = "值2"></ANY> // 注意 : "" 绑定的是变量 ， 要绑定字符串值 -> "''"
+                ...
+                <ANY *ngSwitchDefault></ANY>
+
+             <ANY>
+
+
+
+   3.  样式绑定 :  [ngStyle]     ->  my-component04
+
+          1. 样式绑定作为指令系统用的不是 * 而是中括号
+          2. [ngStyle] = "Object对象（CSS样式）"  ngStyle绑定的必须是一个对象 ， 对象属性就是CSS样式名 ， 可以应用在任何标签上
+
+                  例 : <button [ngStyle] = "ngStyleObject" (click) = "changeNgStyle()">加载更多</button>
+                       这里样式绑定了一个对象ngStyleObject ,
+                       ngStyleObject是在ts文件中的样式对象 :
+
+                         //样式绑定对象
+                         //不推荐将样式写在 ts脚本里面
+                         //根据高内聚低耦合的原则样式应该和脚本分离 ，将样式抽取出来放在 .css文件中
+                         ngStyleObject = {
+                           backgroundColor : '#383',
+                           color : '#910',
+                           'border-color' : '#4f4'
+                         }
+
+                       通过点击事件改变ngStyleObject的属性值达到改变样式的功能 :
+
+                         //点击事件 ，改变样式
+                         //不推荐将样式写在此处
+                         changeNgStyle() {
+                            this.ngStyleObject.backgroundColor = '#010'
+                            this.ngStyleObject.color = '#11f'
+                            this.ngStyleObject["border-color"]= '#349'
+                         }
+
+
+   4.  样式绑定 :  [ngClass]     ->  my-component04
+
+          1. [ngClass]也可以应用到任何标签元素上
+          2. [ngClass]绑定必须是一个对象 ， 对象的属性就是CSS文件的class名 ，
+             属性值为true/false , 为true时该class就出现 ， 为false时该class就不出现
+
+               例 :  <button [ngClass] = "ngClassObject" (click) = "changeNgClass()">加载更多</button>
+
+                         // 测试 [ngClass]
+                         // [ngClass]绑定一个对象  ，对象中属性是样式class名 ， 属性值为 true/false（代表是否启用）
+                         // 绑定的 Css class 的样式（css文件中有这些 class）
+                         ngClassObject = {
+                           btn : true,
+                           'btn-danger' : false,  //烤串法则
+                           'btn-success' : true   //如果样式都为 true ， 则游览器默认最后为 true 的样式覆盖掉前面
+                         }
+
+                         // 点击事件改变 [ngClass]样式绑定
+                         changeNgClass(){
+                           this.ngClassObject["btn"] = true;
+                           this.ngClassObject["btn-danger"] = true;
+                           this.ngClassObject["btn-success"] = false;
+                         }
+
+
+          3. 相比使用 [ngStyle] 更推荐使用 [ngClass] 绑定样式 ， 因为使用 [ngStyle]需要在
+             脚本ts文件里直接修改样式 ， 造成样式和脚本的耦合 ， 使用 [ngClass] 将样式放在.css文件中 ， 使样式和脚本
+             解耦 ， 在脚本文件中只需要控制对应样式是否启用（ true/false ? ）
+
+
+   ***
+     Angular中的指令分为三类 :
+
+          1. 组件指令 (带模板 ，常用的创建组件)
+          2. 结构性指令 : 会影响DOM树结构 ， 必须使用 * 开头  ，如 *ngFor / *ngIf (简而言之能决定这个标签元素是否显示)
+          3. 属性型指令 : 不会影响DOM树结构 ， 只会影响元素外观或者行为 ， 必须用 [] 括起来 ， 如 [ngStyle] / [ngClass]
+             (只能决定样式不能决定标签元素是否显示)
+   ***
+
+
+   ***
+      html里面的有些标签是不能随意嵌套的 ，比如 <p>标签不能嵌套 <p>
+      (因为游览器的自动补全功能，有些元素嵌套后会乱，例如<p>标签)
+   ***
+
+
+
+
+   4. 事件绑定
+
+         事件绑定使用 ()  :  事件名使用 () 括起来 ， 处理函数名后面必须跟小括号 ， 有无参数看情况
+
+         例如 :  (click) = "add()"
+                (click) = "reduce(1)" //处理函数参数如何在 ts文件中取到暂不清楚 ，使用常量值代替
+
+
+
+   5. 双向数据绑定  :  ngModel  （*** 重点）
+
+        "双向" 指的分别是两个方向 :
+
+               1. Model => View
+
+                     模型数据变化则视图中数据跟着变化（后端获取数据渲染页面） , 即属性绑定 , 使用 []
+
+               2. View  => Model
+
+                     视图中数据变化（表单输入框改变，下拉框选择改变等等）模型数据跟着变化 , 本质是事件监听 , 使用 ()
+
+        双向数据绑定兼而有之 ， 所以使用 [(ngModel)] 表示
+
+
+   ***
+
+      *** [(ngModel)] 使用问题 :
+
+          报错实例 :
+
+          Compiled with problems:X
+
+          ERROR
+
+          src/app/my-component04/my-component04.component.html:30:8
+          - error NG8002: Can't bind to 'ngModel' since it isn't a known property of 'input'.
+
+          30 <input [(ngModel)] = "userName" placeholder = "请输入用户名">
+                    ~~~~~~~~~~~~~~~~~~~~~~~~
+
+            src/app/my-component04/my-component04.component.ts:5:16
+              5   templateUrl: './my-component04.component.html',
+                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              Error occurs in the template of component MyComponent04Component.
+
+
+          错误的原因是因为在项目中根本没有导入过 ngModel指令的模块
+
+          导入常用模块过程解析 :
+
+             在 app.module.ts 根模块中
+
+                    @NgModule({ // 表示是模块而非组件
+                      declarations: [ // 声明组件
+                        AppComponent,
+                        myComponent01, //将创建的组件注册到模块中
+                        MyComponent02Component,
+                        MyComponent03Component,
+                        MyComponent04Component
+                      ],
+                      imports: [
+                        BrowserModule,
+                        AppRoutingModule
+                      ],
+                      providers: [],
+                      bootstrap: [AppComponent] //引导启动主组件
+                    })
+                    export class AppModule { }
+
+             存在imports数组 ， 该数组用于指定导入的模块 ，
+             其中 BrowserModule 为游览器模块 ，只要Angular项目用于Web项目 ， 就必须导入此模块
+             此模块导出了 CommonModule（ 包含 *ngFor/*ngIf基本指令 ）和 ApplicationModule两个核心模块
+             并不包含FormsModule模块
+             所以使用ngModel指令报错原因就是因为没有导入它所在模块 "FormsModule"
+             导入步骤 :
+
+                1. import {FormsModule} from "@angular/forms";
+
+                2. imports: [
+                      BrowserModule,
+                      AppRoutingModule,
+                      FormsModule //包含 ngModel 指令
+                   ],
+
+
+   ***
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

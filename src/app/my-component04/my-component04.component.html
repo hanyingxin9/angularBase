@@ -1,0 +1,32 @@
+
+<button *ngIf = "hasMore ; else noMore" (click)  = "loadMore()">加载更多</button>
+<ng-template #noMore>
+  <hr/>
+  <p>已经到底线了</p>
+</ng-template>
+
+
+<button [ngStyle] = "ngStyleObject" (click) = "changeNgStyle()">加载更多</button>
+
+<button [ngClass] = "ngClassObject" (click) = "changeNgClass()">加载更多</button>
+
+<div [ngSwitch] = "userLevel">
+  <div *ngSwitchCase = "'normal'">
+      普通用户，欢迎您！
+  </div>
+  <div *ngSwitchCase = "'vip'">
+      vip用户， 欢迎您！
+  </div>
+  <div *ngSwitchCase = "'blackgold'">
+      黑金用户， 欢迎您！
+  </div>
+  <div *ngSwitchDefault>
+      游客， 欢迎您！
+  </div>
+</div>
+
+<!--View-->
+<!--测试双向数据绑定 [(ngModel)] -->
+<input [(ngModel)] = "userName" placeholder = "请输入用户名">
+<!--测试双向数据绑定改变视图数据后模型数据的变化-->
+<p>{{ userName }}</p>
