@@ -27,6 +27,6 @@
 
 <!--View-->
 <!--测试双向数据绑定 [(ngModel)] -->
-<input [(ngModel)] = "userName" placeholder = "请输入用户名">
+<input [(ngModel)] = "userName" placeholder = "请输入用户名" (ngModelChange) = "userNameChange()">
 <!--测试双向数据绑定改变视图数据后模型数据的变化-->
 <p>{{ userName }}</p>

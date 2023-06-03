@@ -59,6 +59,14 @@ export class MyComponent04Component {
   //测试 [(ngModel)] 双向数据绑定
   userName = "Yui Aragaki";
 
+  //监控 ngModel 数据变化
+  userNameChange(){
+    console.log("userName",this.userName);
+  }
+
+
+
+
 
 
 

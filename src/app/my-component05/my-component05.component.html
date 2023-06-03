@@ -1,0 +1,6 @@
+<input type = "password" placeholder="请输入密码" [(ngModel)] = "password" (ngModelChange) = "passwordChange()"/>
+<span [ngSwitch] = "prompt">
+  <span *ngSwitchCase = "0">您输入的密码太短</span>
+  <span *ngSwitchCase = "1">您输入的密码合适</span>
+  <span *ngSwitchCase = "2">您输入的密码太长</span>
+</span>

@@ -182,7 +182,7 @@ Angular核心概念之三 : 数据绑定     --->  以下数据绑定操作代�
                  这个时候常量内容使用 '' 并使用 + 和变量拼接起来
 
 
-    3. 指令绑定
+    3. 指令绑定  * / []
 
 
 Angular中的指令系统 :
@@ -338,8 +338,11 @@ Angular中的指令系统 :
    ***
      Angular中的指令分为三类 :
 
-          1. 组件指令 (带模板 ，常用的创建组件)
+          1. 组件指令   : NG中 Component 继承自 Directive
+             (组件除了拥有继承自指令的selector选择器 ， 还有模板和样式) ， 所以组件是指令子类 ， 特殊的指令
+
           2. 结构性指令 : 会影响DOM树结构 ， 必须使用 * 开头  ，如 *ngFor / *ngIf (简而言之能决定这个标签元素是否显示)
+
           3. 属性型指令 : 不会影响DOM树结构 ， 只会影响元素外观或者行为 ， 必须用 [] 括起来 ， 如 [ngStyle] / [ngClass]
              (只能决定样式不能决定标签元素是否显示)
    ***
@@ -437,8 +440,242 @@ Angular中的指令系统 :
                       FormsModule //包含 ngModel 指令
                    ],
 
+             以后使用哪个不在基础模块commonModule中的指令时 ， 一定要记得先在 app.module.ts主模块里导入
+   ***
+
+
+   <!--View-->
+   <!--测试双向数据绑定 [(ngModel)] -->
+   <input [(ngModel)] = "userName" placeholder = "请输入用户名">
+   <!--测试双向数据绑定改变视图数据后模型数据的变化-->
+   <p>{{ userName }}</p>
+
+   //在 my-component04.component.html 中使用了 <p></p>标签间接的证明 View视图的数据双向绑定到了模型数据中
+   //angular提供了专门用于监听 ngModel指令的事件 -> (ngModelChange)
+
+   ->  <input [(ngModel)] = "userName" placeholder = "请输入用户名" (ngModelChange) = "userNameChange()">
+
 
    ***
+
+   双向数据绑定练习 = {      ->  my-component05
+
+       注册新用户时 ，密码字段随着输入的进行 ， 后面的span中显示提示文字
+       可能为 :
+         密码长度应该在6-12位之间
+         密码太短了
+         密码长度合适
+         密码超出规定长度
+   }
+
+   ***
+
+
+扩展 : 自定义指令
+
+
+    1. 创建指令命令 :  ng g directive 指令名 （该命令自动创建指令ts文件 ， 并自动注册进主模块的declarations中）
+    2. 自定义指令都是作为元素属性来使用的 ， selector为 [指令名]
+    3. <ANY myDirective> ... </ANY>
+
+    实例 :
+
+       //1. 指令 .ts文件
+       import {Directive, ElementRef} from '@angular/core';
+
+       @Directive({
+         selector: '[MyDirective]' //指令中只有selector ， 没有模板和样式文件
+       })
+       export class MyDirectiveDirective {
+
+         //构造器
+         constructor(el : ElementRef ) {
+
+            console.log("需要强调指令实例化一次");
+            el.nativeElement.style.background = '#fcc';
+            el.nativeElement.style.padding = '10px';
+            el.nativeElement.style.color = '#833';
+         }
+
+       }
+
+       //2. 应用指令
+
+       <!--使用自定义的指令-->
+       <div id = 'd1' MyDirective>
+           my name is Yui Aragaki , my best friend is Apholis ...
+       </div>
+
+       <div id = 'd2'>
+           my name is Yui Aragaki , my best friend is Apholis ...
+       </div>
+
+       <!--使用自定义的指令-->
+       <div id = 'd3' MyDirective>
+           my name is Yui Aragaki , my best friend is Apholis ...
+       </div>
+
+
+
+
+复习总结 :
+
+   1. NG中模块的概念 : 用于对项目中大量组件/指令/管道/服务等对象进行分组 ， 如用户模块 ， 商品模块 ， 主引导模块
+      *** 区分 Node.js/ES6模块 和 NG模块 :
+             Node.js/ES6模块主要用于防止全局污染 ， 而NG模块主要是对对象进行分组
+
+   2. NG中组件的概念 : 是一段可以重复使用的代码片段 ， 组件式编程可以提高代码可维护性
+
+   3. NG中数据绑定和指令 :
+
+          1. html绑定 插值表达式 ->  {{ }}  :  可以放变量 ， (算数/比较/逻辑/三目/)运算 ，调用函数 （不可以创建对象/JSON序列化）
+          2. 属性绑定  []  :  标签元素属性取ts文件中变量的值
+          3. 事件绑定  ()  :  触发事件  (click) = "doSearch()" ...etc
+          4. 指令绑定  * / []
+               1. 循环绑定  *ngFor
+               2. 条件绑定  *ngIf / { [ngSwitch] , *ngSwitchCase , *ngSwitchDefault }
+               3. 样式绑定  [ngStyle] / [ngClass]
+          5. 双向数据绑定  [(ngModel)]
+
+
+   4. NG中指令系统 :
+
+          1. 预定义指令
+
+               1. 组件型指令 : Component 继承自 Directive , 是一种特殊的指令
+               2. 结构性指令（*开头）  : *ngFor / *ngIf / *ngSwitchCase  ...etc  可以改变DOM树的指令
+               3. 属性型指令（[]开头） : [ngStyle] / [ngClass] / [ngSwitch]  ...etc 不改变DOM树 ，只改变样式的指令
+
+          2. 自定义指令
+
+               1. 创建指令 ts文件
+               2. 在模块中注册指令
+               3. 使用指令 :  需要绑定值时使用 [xxx] = ""
+               4. 简化命令 : [npx] ng generate directive 指令名
+
+
+   5. 再次强调 *ngFor / *ngIf / [ngSwitch] 的用法 :
+
+
+          1. *ngFor
+
+             <li *ngFor = " let data of pageInfoList ; let i = index ; ">
+               {{ i }} - {{ data }}
+             </li>
+
+          2. *ngIf
+
+             <p *ngIf = "age > 18 ; else elseBlock"></p>
+             <ng-template #elseBlock>
+                <p>
+                   ...
+                </p>
+             </ng-template>
+
+          3. [ngSwitch]
+
+             <div [ngSwitch] = "表达式">
+               <div *ngSwitchCase = "值1"></div>
+               <div *ngSwitchCase = "值2"></div>
+               <div *ngSwitchDefault></div>
+             </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
